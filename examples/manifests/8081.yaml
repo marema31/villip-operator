@@ -1,0 +1,81 @@
+apiVersion: "villip.carmier.fr/v1"
+kind: "VillipRules"
+metadata:
+  name: port8081
+  labels:
+    ruleset: villiptests
+spec:
+  port: 8081
+  url: "http://smocker:8080/"
+  prefix:
+    - from: /dev/
+      to: /
+      urls:
+        - /dev/env
+        - /dev/low
+        - /dev/urgent
+        - /dev/normal
+    - from: /quick
+      to: /urgent
+    - from: /prod/
+      to: /
+      urls:
+        - /prod/env
+        - /prod/urgent
+  response:
+    replace:
+      - from: book
+        to: laptop
+        urls:
+          - /dev/urgent/get/youngster/connected
+          - /dev/urgent/post/youngster/connected
+          - /dev/urgent/get/children/connected
+          - /dev/urgent/post/children/connected
+      - from: videogame
+        to: chessgame
+        urls:
+          - /dev/urgent/get/boomer
+          - /dev/urgent/post/boomer
+          - /dev/urgent/get/grandparent
+          - /dev/urgent/post/grandparent
+      - from: sing
+        to: rap
+        urls:
+          - /dev/urgent/get/youngster
+          - /dev/urgent/post/youngster
+          - /dev/urgent/get/children
+          - /dev/urgent/post/children
+      - from: take
+        to: Get
+    header:
+      - name: X-Tbm
+        value: no message
+        force: true
+      - name: X-Added
+        value: Always here
+        force: false
+  request:
+    replace:
+      - from: films
+        to: streaming
+        urls:
+          - /dev/urgent/get/youngster/connected
+          - /dev/urgent/post/youngster/connected
+          - /dev/urgent/get/children/connected
+          - /dev/urgent/post/children/connected
+      - from: arcade
+        to: opera
+        urls:
+          - /get/boomer
+          - /post/boomer
+          - /get/grandparent
+          - /post/grandparent
+      - from: arcade
+        to: concert
+        urls:
+          - /dev/urgent/get/youngster
+          - /dev/urgent/post/youngster
+          - /dev/urgent/get/children
+          - /dev/urgent/post/children
+      - from: go
+        to: Go

@@ -1,0 +1,200 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.17.2
+  name: villiprules.villip.carmier.fr
+spec:
+  group: villip.carmier.fr
+  names:
+    kind: VillipRules
+    listKind: VillipRulesList
+    plural: villiprules
+    singular: villiprules
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: VillipRules is the Schema for the villiprules API.
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: VillipRulesSpec defines the desired state of VillipRules.
+            properties:
+              content-types:
+                description: Foo is an example field of VillipRules. Edit villiprules_types.go
+                  to remove/update
+                items:
+                  type: string
+                type: array
+              dump:
+                description: Configuration for dump log.
+                properties:
+                  folder:
+                    type: string
+                  urls:
+                    items:
+                      type: string
+                    type: array
+                type: object
+              force:
+                type: boolean
+              insecure:
+                type: boolean
+              port:
+                type: integer
+              prefix:
+                items:
+                  description: Configuration  for replacement.
+                  properties:
+                    from:
+                      type: string
+                    to:
+                      type: string
+                    urls:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              priority:
+                type: integer
+              replace:
+                items:
+                  description: Configuration  for replacement.
+                  properties:
+                    from:
+                      type: string
+                    to:
+                      type: string
+                    urls:
+                      items:
+                        type: string
+                      type: array
+                  type: object
+                type: array
+              request:
+                description: Configuration for request and response  management.
+                properties:
+                  header:
+                    items:
+                      description: Configuration for header management.
+                      properties:
+                        add:
+                          default: false
+                          type: boolean
+                        force:
+                          type: boolean
+                        name:
+                          type: string
+                        uuid:
+                          type: boolean
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  replace:
+                    items:
+                      description: Configuration  for replacement.
+                      properties:
+                        from:
+                          type: string
+                        to:
+                          type: string
+                        urls:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              response:
+                description: Configuration for request and response  management.
+                properties:
+                  header:
+                    items:
+                      description: Configuration for header management.
+                      properties:
+                        add:
+                          default: false
+                          type: boolean
+                        force:
+                          type: boolean
+                        name:
+                          type: string
+                        uuid:
+                          type: boolean
+                        value:
+                          type: string
+                      type: object
+                    type: array
+                  replace:
+                    items:
+                      description: Configuration  for replacement.
+                      properties:
+                        from:
+                          type: string
+                        to:
+                          type: string
+                        urls:
+                          items:
+                            type: string
+                          type: array
+                      type: object
+                    type: array
+                type: object
+              restricted:
+                items:
+                  type: string
+                type: array
+              status:
+                items:
+                  type: string
+                type: array
+              token:
+                items:
+                  description: Configuration for token management.
+                  properties:
+                    action:
+                      enum:
+                      - accept
+                      - reject
+                      - notEmpty
+                      type: string
+                    header:
+                      type: string
+                    value:
+                      type: string
+                  type: object
+                type: array
+              type:
+                type: string
+              url:
+                type: string
+            type: object
+          status:
+            description: VillipRulesStatus defines the observed state of VillipRules.
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

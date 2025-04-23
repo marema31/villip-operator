@@ -1,0 +1,48 @@
+port: 8080
+url: "http://smocker:8080"
+priority: 50
+prefix:
+  - from: /
+    to: /normal/
+content-types:
+  - "text/html"
+  - "text/plain"
+token:
+  - header: "X-Level"
+    value: "urgent"
+    action: "accept"
+  - header: "X-Level"
+    value: "normal"
+    action: "accept"
+response:
+  replace:
+    - from: book
+      to: laptop
+      urls:
+        - /get/youngster
+        - /post/youngster
+        - /get/children
+        - /post/children
+    - from: videogame
+      to: chessgame
+      urls:
+        - /get/boomer
+        - /post/boomer
+        - /get/grandparent
+        - /post/grandparent
+    - from: sing
+      to: rap
+      urls:
+        - /get/youngster
+        - /post/youngster
+        - /get/children
+        - /post/children
+    - from: take
+      to: Get
+request:
+    header:
+    - name: X-Tbm
+      value: no message
+      force: false
+    - name: X-Request-Id
+      uuid: true

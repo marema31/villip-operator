@@ -1,0 +1,74 @@
+port: 8082
+url: "http://smocker:8080/"
+content-types:
+  - "text/html"
+  - "application/json"
+  - "text/plain"
+status:
+  - 201
+  - 203
+response:
+  replace:
+    - from: book
+      to: laptop
+      urls:
+        - /urgent/get/youngster/connected
+        - /urgent/post/youngster/connected
+        - /urgent/get/children/connected
+        - /urgent/post/children/connected
+        - /urgent/201
+        - /urgent/202
+        - /urgent/plain
+        - /urgent/csv
+    - from: videogame
+      to: chessgame
+      urls:
+        - /urgent/get/boomer
+        - /urgent/post/boomer
+        - /urgent/get/grandparent
+        - /urgent/post/grandparent
+    - from: sing
+      to: rap
+      urls:
+        - /urgent/get/youngster
+        - /urgent/post/youngster
+        - /urgent/get/children
+        - /urgent/post/children
+        - /urgent/201
+        - /urgent/202
+        - /urgent/plain
+        - /urgent/csv
+    - from: take
+      to: Get
+  header:
+    - name: X-Tbm
+      value: no message
+      force: true
+    - name: X-Added
+      value: Always here
+      force: false
+request:
+  replace:
+    - from: films
+      to: streaming
+      urls:
+        - /urgent/get/youngster/connected
+        - /urgent/post/youngster/connected
+        - /urgent/get/children/connected
+        - /urgent/post/children/connected
+    - from: arcade
+      to: opera
+      urls:
+        - /urgent/get/boomer
+        - /urgent/post/boomer
+        - /urgent/get/grandparent
+        - /urgent/post/grandparent
+    - from: arcade
+      to: concert
+      urls:
+        - /urgent/get/youngster
+        - /urgent/post/youngster
+        - /urgent/get/children
+        - /urgent/post/children
+    - from: go
+      to: Go

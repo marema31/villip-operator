@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- villip_v1_villiprules.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

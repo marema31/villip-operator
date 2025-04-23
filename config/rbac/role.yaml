@@ -1,0 +1,44 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - villip.carmier.fr
+  resources:
+  - villiprules
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - villip.carmier.fr
+  resources:
+  - villiprules/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - villip.carmier.fr
+  resources:
+  - villiprules/status
+  verbs:
+  - get
+  - patch
+  - update
