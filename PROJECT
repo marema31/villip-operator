@@ -5,6 +5,16 @@
 domain: carmier.fr
 layout:
 - go.kubebuilder.io/v4
+plugins:
+  deploy-image.go.kubebuilder.io/v1-alpha:
+    resources:
+    - domain: carmier.fr
+      group: villip
+      kind: VillipProxy
+      options:
+        image: villip
+        runAsUser: "1001"
+      version: v1
 projectName: villip-operator
 repo: github.com/marema31/villip-operator
 resources:
@@ -15,6 +25,15 @@ resources:
   domain: carmier.fr
   group: villip
   kind: VillipRules
+  path: github.com/marema31/villip-operator/api/v1
+  version: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: carmier.fr
+  group: villip
+  kind: VillipProxy
   path: github.com/marema31/villip-operator/api/v1
   version: v1
 version: "3"

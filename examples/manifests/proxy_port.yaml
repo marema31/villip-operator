@@ -1,0 +1,19 @@
+apiVersion: "villip.carmier.fr/v1"
+kind: "VillipProxy"
+metadata:
+  name: villip-port
+  namespace: default
+spec:
+  ports:
+    - 8080
+    - 8081
+    - 8082
+  ruleset:
+    - matchlabels:
+        ruleset: villiptests
+        basedon: port
+  target:
+    namespace: default
+    name: smocker
+    port: 8080
+    uri: /

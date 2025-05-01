@@ -1,0 +1,11 @@
+apiVersion: villip.carmier.fr/v1
+kind: VillipProxy
+metadata:
+  labels:
+    app.kubernetes.io/name: villip-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: villipproxy-sample
+spec:
+  # TODO(user): edit the following value to ensure the number
+  # of Pods/Instances your Operand must have on cluster
+  size: 1

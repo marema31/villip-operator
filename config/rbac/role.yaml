@@ -5,6 +5,33 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
   - '*'
   resources:
   - configmaps
@@ -17,8 +44,21 @@ rules:
   - update
   - watch
 - apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
   - villip.carmier.fr
   resources:
+  - villipproxies
   - villiprules
   verbs:
   - create
@@ -31,12 +71,14 @@ rules:
 - apiGroups:
   - villip.carmier.fr
   resources:
+  - villipproxies/finalizers
   - villiprules/finalizers
   verbs:
   - update
 - apiGroups:
   - villip.carmier.fr
   resources:
+  - villipproxies/status
   - villiprules/status
   verbs:
   - get

@@ -3,6 +3,7 @@
 # It should be run by config/default
 resources:
 - bases/villip.carmier.fr_villiprules.yaml
+- bases/villip.carmier.fr_villipproxies.yaml
 # +kubebuilder:scaffold:crdkustomizeresource
 
 patches:

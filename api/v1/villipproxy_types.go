@@ -1,0 +1,103 @@
+/*
+Copyright 2025.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package v1
+
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+type VillipProxyRuleset struct {
+	MatchLabels client.MatchingLabels `json:"matchlabels,omitempty"`
+}
+
+type VillipProxyTarget struct {
+	// +kubebuilder:validation:Optional
+	Namespace string `json:"namespace,omitempty"`
+	Name      string `json:"name,omitempty"`
+	// +kubebuilder:default=80
+	Port uint16 `json:"port,omitempty"`
+	// +kubebuilder:default="/"
+	Uri string `json:"uri,omitempty"`
+}
+
+type VillipImage struct {
+	// +kubebuilder:default="marema31/villip"
+	Name string `json:"name,omitempty"`
+	// +kubebuilder:default="latest"
+	Tag string `json:"tag,omitempty"`
+}
+
+// VillipProxySpec defines the desired state of VillipProxy
+type VillipProxySpec struct {
+	// +kubebuilder:default=false
+	Debug bool `json:"debug,omitempty"`
+	// Default is necessary here because if no value are provided, k8s won't apply the default of the nested object
+	// +kubebuilder:default={}
+	Image VillipImage `json:"image,omitempty"`
+	Ports []uint16    `json:"ports,omitempty"`
+	// +kubebuilder:validation:Optional
+	Ruleset []VillipProxyRuleset `json:"ruleset,omitempty"`
+	Target  VillipProxyTarget    `json:"target,omitempty"`
+
+	// Size defines the number of VillipProxy instances
+	// The following markers will use OpenAPI v3 schema to validate the value
+	// More info: https://book.kubebuilder.io/reference/markers/crd-validation.html
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=3
+	// +kubebuilder:validation:ExclusiveMaximum=false
+	Size int32 `json:"size,omitempty"`
+}
+
+// VillipProxyStatus defines the observed state of VillipProxy
+type VillipProxyStatus struct {
+	// Represents the observations of a VillipProxy's current state.
+	// VillipProxy.status.conditions.type are: "Available", "Progressing", and "Degraded"
+	// VillipProxy.status.conditions.status are one of True, False, Unknown.
+	// VillipProxy.status.conditions.reason the value should be a CamelCase string and producers of specific
+	// condition types may define expected values and meanings for this field, and whether the values
+	// are considered a guaranteed API.
+	// VillipProxy.status.conditions.Message is a human readable message indicating details about the transition.
+	// For further information see: https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#typical-status-properties
+
+	Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
+}
+
+// +kubebuilder:object:root=true
+// +kubebuilder:subresource:status
+
+// VillipProxy is the Schema for the villipproxies API
+type VillipProxy struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   VillipProxySpec   `json:"spec,omitempty"`
+	Status VillipProxyStatus `json:"status,omitempty"`
+}
+
+// +kubebuilder:object:root=true
+
+// VillipProxyList contains a list of VillipProxy
+type VillipProxyList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []VillipProxy `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&VillipProxy{}, &VillipProxyList{})
+}

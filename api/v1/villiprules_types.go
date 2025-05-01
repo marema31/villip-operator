@@ -29,7 +29,6 @@ type VillipRulesSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	// Foo is an example field of VillipRules. Edit villiprules_types.go to remove/update
 	ContentTypes []string                    `yaml:"content-types" json:"content-types,omitempty"` //nolint: tagliatelle
 	Dump         villipFilter.Cdump          `yaml:"dump" json:"dump,omitempty"`
 	Force        bool                        `yaml:"force" json:"force,omitempty"`
@@ -44,13 +43,15 @@ type VillipRulesSpec struct {
 	Status       []string                    `yaml:"status" json:"status,omitempty"`
 	Token        []villipFilter.CtokenAction `yaml:"token" json:"token,omitempty"`
 	Type         string                      `yaml:"type" json:"type,omitempty"`
-	URL          string                      `yaml:"url" json:"url,omitempty"`
 }
 
 // VillipRulesStatus defines the observed state of VillipRules.
 type VillipRulesStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
+	Conditions []metav1.Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type" protobuf:"bytes,1,rep,name=conditions"`
+	// +kubebuilder:default=""
+	LastSum string `json:"lastsum,omitempty"`
 }
 
 // +kubebuilder:object:root=true

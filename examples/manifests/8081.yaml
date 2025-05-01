@@ -2,11 +2,12 @@ apiVersion: "villip.carmier.fr/v1"
 kind: "VillipRules"
 metadata:
   name: port8081
+  namespace: default
   labels:
     ruleset: villiptests
+    basedon: port
 spec:
   port: 8081
-  url: "http://smocker:8080/"
   prefix:
     - from: /dev/
       to: /

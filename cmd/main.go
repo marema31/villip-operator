@@ -203,10 +203,19 @@ func main() {
 	}
 
 	if err = (&controller.VillipRulesReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Recorder: mgr.GetEventRecorderFor("villiprules-controller"),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "VillipRules")
+		os.Exit(1)
+	}
+	if err = (&controller.VillipProxyReconciler{
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		Recorder: mgr.GetEventRecorderFor("villipproxy-controller"),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "VillipProxy")
 		os.Exit(1)
 	}
 	// +kubebuilder:scaffold:builder

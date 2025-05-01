@@ -1,3 +1,11 @@
-port: 8888
-url: "tcp://tcpserver:8888"
-type: tcp
+apiVersion: "villip.carmier.fr/v1"
+kind: "VillipRules"
+metadata:
+  name: tcpexample
+  namespace: default
+  labels:
+    ruleset: villiptcptests
+    basedon: port
+spec:
+  port: 8888
+  type: tcp

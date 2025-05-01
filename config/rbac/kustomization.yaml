@@ -22,6 +22,9 @@ resources:
 # default, aiding admins in cluster management. Those roles are
 # not used by the {{ .ProjectName }} itself. You can comment the following lines
 # if you do not want those helpers be installed with your Project.
+- villipproxy_admin_role.yaml
+- villipproxy_editor_role.yaml
+- villipproxy_viewer_role.yaml
 - villiprules_admin_role.yaml
 - villiprules_editor_role.yaml
 - villiprules_viewer_role.yaml
