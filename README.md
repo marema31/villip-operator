@@ -1,121 +1,75 @@
 # villip-operator
-// TODO(user): Add simple overview of use/purpose
+Kubernetes operator to deploy `villip` a simple http proxy that allow header/content replacement on the fly (see [villip github page](https://github.com/marema31/villip))
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+
+The operator will create two new k8s resources:
+
+- villip.carmier.fr/v1/VillipRules: Configuration of the villip proxy
+- villip.carmier.fr/v1/VillipProxy: Instance of villip proxy
+
+More than one proxy can share the same villiprule and a proxy can use more than on villiprule. The operator relies
+on labels to determine which villiprule will be used by a proxy instance.
+
+### VillipRules
+The spec of this ressource correspond to the [YAML configuration file format of villip](https://github.com/marema31/villip/tree/master?tab=readme-ov-file#yamljson-configuration-files) the only exception is the absence of the url that will be defined in the proxy ressource.
+
+### VillipProxy
+Configuration of one instance of villip proxy:
+
+- size: number of replicas in the deployment
+- ports: list of TCP port on which the instannce will be listening, configuration applied to each port differs and depends on the corresponding villiprules ressources
+- ruleset: Label selectors used to determine the villiprules to be applied to this instance. Each entries in the list will be added to the list of villiprules (boolean OR operation). Each values in the same `matchlabels` entry must be present on a villiprule instance labels to select this ressource (boolean AND operation)
+- target: Namespace, name of the k8s service, port and URI that will be proxified by this instance.
+
+```yaml
+apiVersion: "villip.carmier.fr/v1"
+kind: "VillipProxy"
+metadata:
+  name: villip
+  namespace: default
+spec:
+  size: 2
+  ports:
+    - 8080
+    - 8081
+    - 8082
+  ruleset:
+    - matchlabels:
+        ruleset: villiptests
+        basedon: port
+    - matchlabels:
+        ruleset: villiptests
+        basedon: priority
+  target:
+    namespace: default
+    name: smocker
+    port: 8080
+    uri: /
+```
 
 ## Getting Started
 
-### Prerequisites
-- go version v1.23.0+
-- docker version 17.03+.
-- kubectl version v1.11.3+.
-- Access to a Kubernetes v1.11.3+ cluster.
-
-### To Deploy on the cluster
-**Build and push your image to the location specified by `IMG`:**
+### Deploy using the bundle with all YAML files
 
 ```sh
-make docker-build docker-push IMG=<some-registry>/villip-operator:tag
+kubectl apply -f https://raw.githubusercontent.com/marema31/villip-operator/<tag or branch>/dist/install.yaml
 ```
 
-**NOTE:** This image ought to be published in the personal registry you specified.
-And it is required to have access to pull the image from the working environment.
-Make sure you have the proper permission to the registry if the above commands don’t work.
+### Deploy using Helm Chart
 
-**Install the CRDs into the cluster:**
 
 ```sh
-make install
+ helm install my-release https://raw.githubusercontent.com/marema31/villip-operator/<tag or branch>/dist/chart --create-namespace --namespace villip-operator-system
 ```
 
-**Deploy the Manager to the cluster with the image specified by `IMG`:**
-
-```sh
-make deploy IMG=<some-registry>/villip-operator:tag
-```
-
-> **NOTE**: If you encounter RBAC errors, you may need to grant yourself cluster-admin
-privileges or be logged in as admin.
-
-**Create instances of your solution**
-You can apply the samples (examples) from the config/sample:
-
-```sh
-kubectl apply -k config/samples/
-```
-
->**NOTE**: Ensure that the samples has default values to test it out.
-
-### To Uninstall
-**Delete the instances (CRs) from the cluster:**
-
-```sh
-kubectl delete -k config/samples/
-```
-
-**Delete the APIs(CRDs) from the cluster:**
-
-```sh
-make uninstall
-```
-
-**UnDeploy the controller from the cluster:**
-
-```sh
-make undeploy
-```
-
-## Project Distribution
-
-Following the options to release and provide this solution to the users.
-
-### By providing a bundle with all YAML files
-
-1. Build the installer for the image built and published in the registry:
-
-```sh
-make build-installer IMG=<some-registry>/villip-operator:tag
-```
-
-**NOTE:** The makefile target mentioned above generates an 'install.yaml'
-file in the dist directory. This file contains all the resources built
-with Kustomize, which are necessary to install this project without its
-dependencies.
-
-2. Using the installer
-
-Users can just run 'kubectl apply -f <URL for YAML BUNDLE>' to install
-the project, i.e.:
-
-```sh
-kubectl apply -f https://raw.githubusercontent.com/<org>/villip-operator/<tag or branch>/dist/install.yaml
-```
-
-### By providing a Helm Chart
-
-1. Build the chart using the optional helm plugin
-
-```sh
-kubebuilder edit --plugins=helm/v1-alpha
-```
-
-2. See that a chart was generated under 'dist/chart', and users
-can obtain this solution from there.
-
-**NOTE:** If you change the project, you need to update the Helm Chart
-using the same command above to sync the latest changes. Furthermore,
-if you create webhooks, you need to use the above command with
-the '--force' flag and manually ensure that any custom configuration
-previously added to 'dist/chart/values.yaml' or 'dist/chart/manager/manager.yaml'
-is manually re-applied afterwards.
+### Create the villiprules and villipproxy resources manifests
+Detailled example are provided in examples/manifests folder. They are based on the [end-to-end villip test suite](https://github.com/marema31/villip/tree/master/e2e_tests).
 
 ## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
 
-**NOTE:** Run `make help` for more information on all potential `make` targets
-
-More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
+This project is mainly a learning project for me, but it is used for development stack in several organizations.
+If it fits your need but miss some features, feel free to fork it or propose pull request on it.
 
 ## License
 
@@ -132,4 +86,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-

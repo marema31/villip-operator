@@ -29,7 +29,7 @@ type VillipRulesSpec struct {
 	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 
-	ContentTypes []string                    `yaml:"content-types" json:"content-types,omitempty"` //nolint: tagliatelle
+	ContentTypes []string                    `yaml:"content-types" json:"content-types,omitempty"` // nolint: tagliatelle
 	Dump         villipFilter.Cdump          `yaml:"dump" json:"dump,omitempty"`
 	Force        bool                        `yaml:"force" json:"force,omitempty"`
 	Insecure     bool                        `yaml:"insecure" json:"insecure,omitempty"`

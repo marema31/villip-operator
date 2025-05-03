@@ -4,6 +4,12 @@ metadata:
   labels:
     app.kubernetes.io/name: villip-operator
     app.kubernetes.io/managed-by: kustomize
+    ruleset: villiptest
   name: villiprules-sample
 spec:
-  # TODO(user): Add fields here
+  size: 1
+  ruleset:
+  - matchlabels:
+      ruleset: villiptest
+  ports:
+    - 8080

@@ -4,6 +4,7 @@ metadata:
   name: villip-port
   namespace: default
 spec:
+  size: 1
   ports:
     - 8080
     - 8081

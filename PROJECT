@@ -15,6 +15,7 @@ plugins:
         image: villip
         runAsUser: "1001"
       version: v1
+  helm.kubebuilder.io/v1-alpha: {}
 projectName: villip-operator
 repo: github.com/marema31/villip-operator
 resources:

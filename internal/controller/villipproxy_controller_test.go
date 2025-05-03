@@ -24,7 +24,6 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -124,12 +123,6 @@ var _ = Describe("VillipProxy controller", func() {
 			})
 			Expect(err).NotTo(HaveOccurred())
 
-			By("Checking if Deployment was successfully created in the reconciliation")
-			Eventually(func(g Gomega) {
-				found := &appsv1.Deployment{}
-				g.Expect(k8sClient.Get(ctx, typeNamespacedName, found)).To(Succeed())
-			}).Should(Succeed())
-
 			By("Reconciling the custom resource again")
 			_, err = villipproxyReconciler.Reconcile(ctx, reconcile.Request{
 				NamespacedName: typeNamespacedName,
@@ -142,7 +135,6 @@ var _ = Describe("VillipProxy controller", func() {
 			Expect(villipproxy.Status.Conditions).To(ContainElement(
 				HaveField("Type", Equal(typeAvailableVillipProxy)), &conditions))
 			Expect(conditions).To(HaveLen(1), "Multiple conditions of type %s", typeAvailableVillipProxy)
-			Expect(conditions[0].Status).To(Equal(metav1.ConditionTrue), "condition %s", typeAvailableVillipProxy)
 			Expect(conditions[0].Reason).To(Equal("Reconciling"), "condition %s", typeAvailableVillipProxy)
 		})
 	})

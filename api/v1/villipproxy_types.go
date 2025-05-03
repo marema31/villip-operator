@@ -60,6 +60,7 @@ type VillipProxySpec struct {
 	// +kubebuilder:validation:Minimum=1
 	// +kubebuilder:validation:Maximum=3
 	// +kubebuilder:validation:ExclusiveMaximum=false
+	// +kubebuilder:default=2
 	Size int32 `json:"size,omitempty"`
 }
 
